@@ -1,8 +1,18 @@
 from django.test import SimpleTestCase
-from 
+from django.urls import reverse, resolve
+from budget.views import project_list, project_detail, ProjectCreateView
 
 
-class Test_urls(SimpleTestCase):
+class TestUrls(SimpleTestCase):
+    def test_list_url_is_resolves(self):
+        url = reverse("list")
+        # print(resolve(url))
+        self.assertEquals(resolve(url).func, project_list)
 
-    def test_list_resolve(self):
-        url = reverse
+    def test_create_url_resolves(self):
+        url = reverse("add")
+        self.assertEquals(resolve(url).func.view_class, ProjectCreateView)
+
+    def test_detail_url_resolves(self):
+        url = reverse("detail", args=["some-slug"])
+        self.assertEquals(resolve(url).func, project_detail)
